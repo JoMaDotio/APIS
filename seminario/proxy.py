@@ -1,21 +1,21 @@
-from db_connector import get_lessons, get_text
+from db_connector import getLessons, getContent
 from flask import Flask, jsonify
 
 app = Flask(__name__)
 
-@app.route('/lesson_menu')
-def get_lessons_menu():
-    dicc = get_lessons()
-    dicc["data"] = get_text(dicc["numLess"])
-    return jsonify(dicc)
+@app.route('/menu')
+def getMenu():
+    lessons = getLessons()
+    for lesson in lessons:
+        lesson["content"] = getContent(lesson["numLess"])
+    return jsonify(lessons)
 
-@app.route('/lessons')
-def get_all_lessons(numLess=1):
-    return jsonify(get_text())
-
-@app.route('/lesson<int:id>')
-def get_text_db(numLess=1):
-    return jsonify(get_text(id))
+@app.route('/lesson<int:num>')
+def getLessonData(num=1):
+    lesson = getLessons(num)
+    lesson["content"] = getContent(lesson["numLess"])
+    print(lesson)
+    return jsonify(lesson)
 
 if __name__ == '__main__':
     app.run(debug=True)

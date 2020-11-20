@@ -1,4 +1,4 @@
-CREATE DATABASE typing_Game;
+CREATE DATABASE typing_game;
 /* userName se cambia por el usuario de la base que tengan */
 CREATE USER 'userName'@'localhost' IDENTIFIED BY 'userName';
 /* La contraeña se cambia por 'password', cambienla si quieren */

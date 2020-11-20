@@ -1,3 +1,4 @@
+from os import execlp
 from flask import Flask, jsonify, request
 import mysql.connector
 
@@ -95,7 +96,6 @@ def accessUser ():
 @app.route('/circulares')
 @app.route('/circulares/<int:cant>')
 def circulares(cant = 4):
-    cursor = db.cursor()
     query = 'SELECT contenido, numero, fecha FROM circulares ORDER BY numero DESC LIMIT %s'
     cursor.execute(query, (cant,))
     circulares = []
@@ -118,6 +118,11 @@ def userCourses(cod = None):
     else:
         return jsonify({'Code':'Error'})
 
+def get_cupos_dis(nrc):
+    if not nrc:
+        raise Exception("invalid nrc")
+    query = "SELECT "
+    cursor
 
 
 if __name__ == '__main__':
