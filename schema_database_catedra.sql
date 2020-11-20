@@ -3,7 +3,7 @@ CREATE DATABASE theamUdg;
 CREATE USER 'userName'@'localhost' IDENTIFIED BY 'userName';
 /* La contraeña se cambia por 'password', cambienla si quieren */
 ALTER USER userName@localhost IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON mekno.* TO 'userName'@'localhost';
+GRANT ALL PRIVILEGES ON theamUdg.* TO 'userName'@'localhost';
 USE theamUdg;
 
 CREATE TABLE usuario(
