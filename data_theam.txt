@@ -1,0 +1,3 @@
+INSERT INTO usuario (codigo, nombre, sNombres, apellidoP, apellidoM, carrera, adminKey, cicloInicio, activo, contrasenia) VALUES (215476966, 'Jose', 'Manuel', 'Sanches', 'Fregoso', 'INCO', false, '2018B', true, 'holamundo');
+INSERT INTO usuario (codigo, nombre, sNombres, apellidoP, apellidoM, carrera, adminKey, cicloInicio, activo, contrasenia) VALUES (2154788584, 'Joaqin', 'Atanasio', 'Del niño jesus', 'Pobrecito', 'INCO', false, '2019A', true, 'soyjoaqin');
+INSERT INTO clase (clave, fechaI, fechaF, creditos) VALUES ();
