@@ -71,3 +71,15 @@ def getContent(numLess=None):
     cursor.execute("SELECT contents FROM randomText;")
     contents = cursor.fetchall()
     return contents
+
+# Regresa una lista de objetos que tiene todas las posiciones del ranking
+def getActualRanking():
+    cursor.execute("SELECT * from ranking")
+    ranking = []
+    for aux in cursor.fetchall():
+        data = {
+            "username": aux[0],
+            "wpm": aux[1]
+        }
+        ranking.append(data)
+    return ranking

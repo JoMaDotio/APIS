@@ -27,3 +27,8 @@ CREATE TABLE lessRand (
     FOREIGN KEY (idRand)
         REFERENCES randomText(id)
 );
+
+CREATE TABLE ranking(
+    username VARCHAR(50) NOT NULL,
+    wpm INT UNSIGNED NOT NULL
+);
