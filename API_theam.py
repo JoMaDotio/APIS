@@ -2,18 +2,26 @@ from flask import Flask, jsonify, request
 import mysql.connector
 
 
+"""
+To do:
+Modify data base to have spaces for courses
+# get para oferta (ver que show ya que son muchos campos y no simpre estaran llenos)
+# post para agendar materias update materiaalumno, materia
+"""
+
+"""
+DONE:
+# login del usuario (Consultar que exista y dar acceso) check
+# Horario del usario check
+# circulares check
+"""
+
 app = Flask(__name__)
 db = mysql.connector.connect (
     user = "manuel", password = "taquero", database = "theamUdg")
 
 
 cursor = db.cursor()
-
-# login del usuario (Consultar que exista y dar acceso) check
-# get para oferta 
-# Horario del usario check
-# circulares check
-# post para agendar materias update materiaalumno
 
 
 def login(data_base, cod, password):
