@@ -8,7 +8,7 @@ USE typing_game;
 
 CREATE TABLE randomText (
     id INT NOT NULL PRIMARY KEY,
-    contenido VARCHAR (1000) NOT NULL
+    contents VARCHAR (1000) NOT NULL
 );
 
 CREATE TABLE lesson ( 
@@ -22,6 +22,8 @@ CREATE TABLE lessRand (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idLess INT UNSIGNED NOT NULL,
     idRand INT NOT NULL,
-    FOREIGN KEY (idLess) REFERENCES lesson(numLess),
-    FOREIGN KEY (idRand) REFERENCES randomText(id)
+    FOREIGN KEY (idLess)
+        REFERENCES lesson(numLess),
+    FOREIGN KEY (idRand)
+        REFERENCES randomText(id)
 );
