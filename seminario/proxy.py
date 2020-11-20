@@ -17,4 +17,5 @@ def get_all_lessons(numLess=1):
 def get_text_db(numLess=1):
     return jsonify(get_text(id))
 
-app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
