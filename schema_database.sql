@@ -18,7 +18,7 @@ CREATE TABLE lesson (
 CREATE TABLE lessRand (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     idLess INT UNSIGNED NOT NULL,
-    idRand INT UNSIGNED NOT NULL,
+    idRand INT NOT NULL,
     FOREIGN KEY (idLess) REFERENCES lesson(numLess),
     FOREIGN KEY (idRand) REFERENCES randomText(id)
 );
