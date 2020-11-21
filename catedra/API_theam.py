@@ -123,19 +123,22 @@ Formats for request:
     GET -> /agenda?codigo=userCode&nrc=nrcRegis
 '''
 @app.route('/agenda', methods = ['GET'])
-def registrarMateriaAlumno(codigo=None, nrc=None):
+def registrarMateriaAlumno():
+    codigo = request.args.get('codigo')
+    nrc = request.args.get('nrc')
+    cupDis = get_cupos_dis(nrc)
+    if cupDis == "error":
+        return jsonify({'code': 'Invalid NRC'})
+    if data_exists("usuario", "codigo", codigo) == False:
+        return jsonify({'code': 'Invalid code'})
     if not codigo and not nrc:
-        return jsonify({'Code' : 'Missing cod and nrc'})
-    elif not code or not nrc:
-        return jsonify({'Code' : 'Missing argument', 'cod' : codigo, 'nrc' : nrc})
-    elif request.method == "GET":
-        codigo = method.args.get('codigo')
-        nrc = method.args.get('nrc')
-        cupDis = get_cupos_dis(nrc)
+        return jsonify({'code' : 'Missing CODE and NRC'})
+    if not codigo or not nrc:
+        return jsonify({'code' : 'Missing argument', 'cod' : codigo, 'nrc' : nrc})
+    if request.method == "GET":
         if (cupDis >= 0):
             cupDis = cupDis - 1
             query = "UPDATE materia SET cupDis=%s WHERE claseNRC=%s"
-            print(query, (cupDis, nrc))
             cursor.execute(query, (cupDis, nrc))
             db.commit()
             # se modifica tabla materiaAlumno
@@ -145,8 +148,25 @@ def registrarMateriaAlumno(codigo=None, nrc=None):
             return jsonify({"code": "ok"})
         # Si la materia ya cuenta con cupo negativo entonces se hay un error
         return jsonify({"code": "error no space"})
+    else:
+        return jsonify({"code": "Error"})
+
+def data_exists(table, column, data):
+    retData = False
+    preliminar = "error"
+    #query = "SELECT %s FROM %s WHERE %s = %s"
+    query = f"SELECT {column} FROM {table} WHERE {column}={data}"
+    cursor.execute(query)
+    for aux in cursor.fetchall():
+        preliminar = aux[0]
+        if preliminar != "error":
+            retData = True
+    return retData
 
 def get_cupos_dis(nrc):
+    # Dato preliminar, si el dato no cambia después de realizar la
+    # query entonces la consulta falló    
+    cupDis = "error"
     if not nrc:
         raise Exception("No NRC provided")
     query = "SELECT cupDis from materia WHERE claseNrc=%s"
