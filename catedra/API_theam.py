@@ -168,6 +168,7 @@ def registrarMateriaAlumno(codigo = None, nrc = None):
 
 @app.route('/oferta', methods=['GET'])
 def oferta():
+    data = []
     ciclo = request.args.get('ciclo')
     centro = request.args.get('centro')
     clave = request.args.get('clave')
@@ -176,25 +177,25 @@ def oferta():
     multiple = False
     
     query = "SELECT * FROM materia WHERE"
-    if (data_exists("materia", "ciclo", ciclo) == True):
+    if (ciclo != None):
         if (multiple == True):
             query += " AND"
         else:
             multiple = True
         query += f" ciclo=\"{ciclo}\""
-    if (data_exists("materia", "clave", clave) == True):
+    if (clave != None):
         if (multiple == True):
             query += " AND"
         else:
             multiple = True
         query += f" clave=\"{clave}\""
-    if (data_exists("materia", "claseNrc", materia) == True):
+    if (materia != None):
         if (multiple == True):
             query += " AND"
         else:
             multiple = True
         query += f" claseNrc=\"{materia}\""
-    if (data_exists("materia", "profesor", maestro) == True):
+    if (maestro != None):
         if (multiple == True):
             query += " AND"
         else:
@@ -203,22 +204,23 @@ def oferta():
     if query == "SELECT * FROM materia WHERE ":
         return jsonify({'code': 'Error, no data avaliable'})
     cursor.execute(query)
-    for row in cursor.fetchall():
-        data = {
-                'NRC' : row[0],
-                'Clave' : row[1],
-                'Nombre' : row[2],
-                'Dias' : row[3],
-                'Seccion' : row[4],
-                'Cupos': row[5],
-                'CuposDis': row[6],
-                'Edificio' : row[7],
-                'Aula' : row[8],
-                'Profesor' : row[9],
-                'Ciclo': row[10]
-            }
-        return data
-    return
+    auxLista = cursor.fetchall()
+    if len(auxLista) != 0:
+        for row in auxLista:
+            data = {
+                    'NRC' : row[0],
+                    'Clave' : row[1],
+                    'Nombre' : row[2],
+                    'Dias' : row[3],
+                    'Seccion' : row[4],
+                    'Cupos': row[5],
+                    'CuposDis': row[6],
+                    'Edificio' : row[7],
+                    'Aula' : row[8],
+                    'Profesor' : row[9],
+                    'Ciclo': row[10]
+                }
+    return jsonify(data)
 
 def get_cupos_dis(nrc):
     # Dato preliminar, si el dato no cambia después de realizar la
