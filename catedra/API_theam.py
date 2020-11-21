@@ -19,11 +19,9 @@ DONE:
 
 app = Flask(__name__)
 db = mysql.connector.connect (
-    user = "manuel", password = "taquero", database = "theamUdg")
-
+    user = "userName", password = "password", database = "theamUdg")
 
 cursor = db.cursor()
-
 
 def login(data_base, cod, password):
     cursor = data_base.cursor()
@@ -54,7 +52,7 @@ def getUserData(dataBase, cod):
 
 def getCourses(dataBase, code):
     cursor =  dataBase.cursor()
-    query = 'SELECT claseNrc FROM materiaalumno WHERE codigoAl = %s'
+    query = 'SELECT claseNrc FROM materiaAlumno WHERE codigoAl = %s'
     cursor.execute(query, (code,))
     nrc = []
     for row in cursor.fetchall():
@@ -62,7 +60,7 @@ def getCourses(dataBase, code):
         nrc.append(a)
     courses = []
     for course in nrc:
-        queryCour = 'SELECT claseNrc, clave, nombre, dias, seccion, edificio, aula, profesor FROM materia WHERE claseNrc = %s'
+        queryCour = 'SELECT * FROM materia WHERE claseNrc = %s'
         cursor.execute(queryCour, (course,))
         row = cursor.fetchone()
         if row:
@@ -72,14 +70,16 @@ def getCourses(dataBase, code):
                 'Nombre' : row[2],
                 'Dias' : row[3],
                 'Seccion' : row[4],
-                'Edificio' : row[5],
-                'Aula' : row[6],
-                'Profesor' : row[7]
+                'Cupos': row[5],
+                'CuposDis': row[6],
+                'Edificio' : row[7],
+                'Aula' : row[8],
+                'Profesor' : row[9]
             }
             courses.append(a)
     return courses
 
-
+@app.route("/")
 @app.route("/login", methods = ['GET', 'POST'])
 def accessUser ():
     if request.method == 'GET':
@@ -118,13 +118,32 @@ def userCourses(cod = None):
     else:
         return jsonify({'Code':'Error'})
 
+@app.route('/agenda')
+def registrarMateriaAlumno(codigo=215476966, nrc=42268):
+    if request.method == "GET":
+        cupDis = get_cupos_dis(nrc)
+        if (cupDis >= 0):
+            cupDis = cupDis - 1
+            query = "UPDATE materia SET cupDis=%s WHERE claseNRC=%s"
+            print(query, (cupDis, nrc))
+            cursor.execute(query, (cupDis, nrc))
+            
+            # se modifica tabla materiaAlumno
+            query = "INSERT INTO materiaAlumno (codigoAl, claseNrc) VALUES (%s, %s)"
+            cursor.execute(query, (codigo, nrc))
+            
+            return jsonify({"code": "ok"})
+        # Si la materia ya cuenta con cupo negativo entonces se hay un error
+        return jsonify({"code": "error"})
+
 def get_cupos_dis(nrc):
     if not nrc:
-        raise Exception("invalid nrc")
-    query = "SELECT "
-    cursor
-
+        raise Exception("No NRC provided")
+    query = "SELECT cupDis from materia WHERE claseNrc=%s"
+    cursor.execute(query, (nrc,))
+    for aux in cursor.fetchall():
+        cupDis = aux[0]
+    return cupDis
 
 if __name__ == '__main__':
     app.run (debug = True)
-    

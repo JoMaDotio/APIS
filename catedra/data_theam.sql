@@ -3,6 +3,7 @@ INSERT INTO usuario (codigo, nombre, sNombres, apellidoP, apellidoM, carrera, ad
     VALUES (215476966, 'Jose', 'Manuel', 'Sanches', 'Fregoso', 'INCO', false, '2018B', true, 'holamundo');
 INSERT INTO usuario (codigo, nombre, sNombres, apellidoP, apellidoM, carrera, adminKey, cicloInicio, activo, contrasenia)
     VALUES (2154788584, 'Joaqin', 'Atanasio', 'Del niño jesus', 'Pobrecito', 'INCO', false, '2019A', true, 'soyjoaqin');
+
 INSERT INTO clase (clave, fechaI, fechaF, creditos)
     VALUES ('I5884', '07/09/20', '18/12/20', 8);
 INSERT INTO clase (clave, fechaI, fechaF, creditos)
@@ -21,6 +22,7 @@ INSERT INTO clase (clave, fechaI, fechaF, creditos)
     VALUES ('I7022', '07/09/20', '18/12/20', 8);
 INSERT INTO clase (clave, fechaI, fechaF, creditos)
     VALUES ('I5898', '07/09/20', '18/12/20', 8);
+
 INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edificio, aula, profesor)
     VALUES (42268, 'I5884', 'ALGORITMIA', 'M,J', 'D01', 42, 42, 'DEDX', 'A017', 'LUPERCIO CORONEL, RAMIRO');
 INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edificio, aula, profesor)
@@ -31,6 +33,7 @@ INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edif
     VALUES (59829, 'I5884', 'ALGORITMIA', 'M,J', 'D10', 42, 42, 'DEDX', 'A002', 'GOMEZ ANAYA DAVID ALEJANDRO');
 INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edificio, aula, profesor)
     VALUES (140468, 'I5884', 'ALGORITMIA', 'L,I', 'D12', 42, 42, 'DEDX', 'A006', 'RODRIGUEZ ACOSTA, LUIS FERNANDO');
+
 INSERT INTO circulares (id, contenido, numero, fecha)
     VALUES (1,' Por acuerdo con el Rector General y en seguimiento a las acciones preventivas que nuestra Institución ha llevado a cabo desde el 17 de marzo del año en curso para evitar la propagación del Coronavirus (Covid-19) y derivado del estado actual de la emergencia sanitaria, la Universidad de...', 31, '13/11/20');
 INSERT INTO circulares (id, contenido, numero, fecha)
@@ -43,6 +46,7 @@ INSERT INTO circulares (id, contenido, numero, fecha)
     VALUES (5,'Lunes 02 de noviembre, será día de descanso obligatorio tanto para el personal académico como para el personal administrativo; lo anterior, con base a lo estipulado en las cláusulas 33 y 61 de los Contratos Colectivos de Trabajo celebrados con el STAUdeG y SUTUdeG, respectivamente.', 27, '23/10/20');
 INSERT INTO circulares (id, contenido, numero, fecha)
     VALUES (6,'Por acuerdo con el Rector General y en seguimiento a las acciones preventivas que nuestra Institución ha llevado a cabo desde el 17 de marzo del año en curso para evitar la propagación del Coronavirus (Covid-19) y derivado del estado actual de la Emergencia Sanitaria, la Universidad de...', 26, '09/10/20');
+
 INSERT INTO materiaAlumno (codigoAl, claseNrc)
     VALUES(215476966, 59829);
 INSERT INTO materiaAlumno (codigoAl, claseNrc)
