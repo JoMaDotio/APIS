@@ -23,16 +23,16 @@ INSERT INTO clase (clave, fechaI, fechaF, creditos)
 INSERT INTO clase (clave, fechaI, fechaF, creditos)
     VALUES ('I5898', '07/09/20', '18/12/20', 8);
 
-INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edificio, aula, profesor)
-    VALUES (42268, 'I5884', 'ALGORITMIA', 'M,J', 'D01', 42, 42, 'DEDX', 'A017', 'LUPERCIO CORONEL, RAMIRO');
-INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edificio, aula, profesor)
-    VALUES (42269, 'I5884', 'ALGORITMIA', 'M,J', 'D02', 42, 42, 'UNDEF', ' ', 'GARCIA HERNANDEZ MARTIN');
-INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edificio, aula, profesor)
-    VALUES (59549, 'I5884', 'ALGORITMIA', 'M,J', 'D06', 42, 42, 'DEDX', 'A003', 'ESPINOZA VALDEZ AURORA');
-INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edificio, aula, profesor)
-    VALUES (59829, 'I5884', 'ALGORITMIA', 'M,J', 'D10', 42, 42, 'DEDX', 'A002', 'GOMEZ ANAYA DAVID ALEJANDRO');
-INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edificio, aula, profesor)
-    VALUES (140468, 'I5884', 'ALGORITMIA', 'L,I', 'D12', 42, 42, 'DEDX', 'A006', 'RODRIGUEZ ACOSTA, LUIS FERNANDO');
+INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edificio, aula, profesor, ciclo)
+    VALUES (42268, 'I5884', 'ALGORITMIA', 'M,J', 'D01', 42, 42, 'DEDX', 'A017', 'LUPERCIO CORONEL, RAMIRO', '2020B');
+INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edificio, aula, profesor, ciclo)
+    VALUES (42269, 'I5884', 'ALGORITMIA', 'M,J', 'D02', 42, 42, 'UNDEF', ' ', 'GARCIA HERNANDEZ MARTIN', '2020B');
+INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edificio, aula, profesor, ciclo)
+    VALUES (59549, 'I5884', 'ALGORITMIA', 'M,J', 'D06', 42, 42, 'DEDX', 'A003', 'ESPINOZA VALDEZ AURORA', '2020B');
+INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edificio, aula, profesor, ciclo)
+    VALUES (59829, 'I5884', 'ALGORITMIA', 'M,J', 'D10', 42, 42, 'DEDX', 'A002', 'GOMEZ ANAYA DAVID ALEJANDRO', '2020B');
+INSERT INTO materia (claseNrc, clave, nombre, dias, seccion, cupos, cupDis, edificio, aula, profesor, ciclo)
+    VALUES (140468, 'I5884', 'ALGORITMIA', 'L,I', 'D12', 42, 42, 'DEDX', 'A006', 'RODRIGUEZ ACOSTA, LUIS FERNANDO', '2020B');
 
 INSERT INTO circulares (id, contenido, numero, fecha)
     VALUES (1,' Por acuerdo con el Rector General y en seguimiento a las acciones preventivas que nuestra Institución ha llevado a cabo desde el 17 de marzo del año en curso para evitar la propagación del Coronavirus (Covid-19) y derivado del estado actual de la emergencia sanitaria, la Universidad de...', 31, '13/11/20');

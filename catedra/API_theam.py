@@ -85,7 +85,8 @@ def getCourses(dataBase, code):
                 'CuposDis': row[6],
                 'Edificio' : row[7],
                 'Aula' : row[8],
-                'Profesor' : row[9]
+                'Profesor' : row[9],
+                'Ciclo': row[10]
             }
             courses.append(a)
     return courses
@@ -165,10 +166,15 @@ def registrarMateriaAlumno(codigo = None, nrc = None):
     # Si la materia ya cuenta con cupo negativo entonces se hay un error
     return jsonify({"code": "error no space"})
 
-@app.route('/logout')
-def logout():
+@app.route('/oferta', methods=['GET'])
+def oferta():
+    ciclo = request.args.get('ciclo')
+    centro = request.args.get('centro')
+    clave = request.args.get('clave')
+    materia = request.args.get('materia')
+    maestro = request.args.get('maestro')
+    
     return
-
 
 def get_cupos_dis(nrc):
     # Dato preliminar, si el dato no cambia después de realizar la

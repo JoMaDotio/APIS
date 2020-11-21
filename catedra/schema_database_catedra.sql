@@ -38,7 +38,8 @@ CREATE TABLE materia(
     cupDis INT DEFAULT 0,
     edificio VARCHAR(20) NOT NULL,
     aula VARCHAR(20) NOT NULL,
-    profesor VARCHAR (500),
+    profesor VARCHAR (500) NOT NULL,
+    ciclo VARCHAR (10) NOT NULL,
     PRIMARY KEY (claseNrc),
     FOREIGN KEY (clave)
         REFERENCES clase(clave)
