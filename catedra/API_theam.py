@@ -118,9 +118,19 @@ def userCourses(cod = None):
     else:
         return jsonify({'Code':'Error'})
 
-@app.route('/agenda')
-def registrarMateriaAlumno(codigo=215476966, nrc=42268):
-    if request.method == "GET":
+'''
+Formats for request:
+    GET -> /agenda?codigo=userCode&nrc=nrcRegis
+'''
+@app.route('/agenda', methods = ['GET'])
+def registrarMateriaAlumno(codigo=None, nrc=None):
+    if not codigo and not nrc:
+        return jsonify({'Code' : 'Missing cod and nrc'})
+    elif not code or not nrc:
+        return jsonify({'Code' : 'Missing argument', 'cod' : codigo, 'nrc' : nrc})
+    elif request.method == "GET":
+        codigo = method.args.get('codigo')
+        nrc = method.args.get('nrc')
         cupDis = get_cupos_dis(nrc)
         if (cupDis >= 0):
             cupDis = cupDis - 1
@@ -134,7 +144,7 @@ def registrarMateriaAlumno(codigo=215476966, nrc=42268):
             db.commit()
             return jsonify({"code": "ok"})
         # Si la materia ya cuenta con cupo negativo entonces se hay un error
-        return jsonify({"code": "error"})
+        return jsonify({"code": "error no space"})
 
 def get_cupos_dis(nrc):
     if not nrc:
