@@ -74,7 +74,7 @@ def getContent(numLess=None):
 
 # Regresa una lista de objetos que tiene todas las posiciones del ranking
 def getActualRanking():
-    cursor.execute("SELECT * from ranking")
+    cursor.execute("SELECT * FROM ranking ORDER BY wpm DESC")
     ranking = []
     for aux in cursor.fetchall():
         data = {

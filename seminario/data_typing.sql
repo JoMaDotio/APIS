@@ -29,3 +29,16 @@ INSERT INTO lessRand (idLess, idRand)
     VALUES (3, 4);
 INSERT INTO lessRand (idLess, idRand)
     VALUES (4, 5);
+
+INSERT INTO ranking
+    VALUES ("ElOaks", 72);
+INSERT INTO ranking
+    VALUES ("AngelogroPistaches", 73);
+INSERT INTO ranking
+    VALUES ("ElGrobas", 69);
+INSERT INTO ranking
+    VALUES ("Mañuel", 70);
+INSERT INTO ranking
+    VALUES ("SilisiosElDelFarnais", 66);
+INSERT INTO ranking
+    VALUES ("DieguitoMaradona", 75);

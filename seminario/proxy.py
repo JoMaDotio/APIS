@@ -10,7 +10,9 @@ def getMenu():
         lesson["content"] = getContent(lesson["numLess"])
     return jsonify(lessons)
 
-@app.route('/lesson<int:num>')
+
+@app.route('/lesson/')
+@app.route('/lesson/<int:num>')
 def getLessonData(num=1):
     lesson = getLessons(num)
     lesson["content"] = getContent(lesson["numLess"])
