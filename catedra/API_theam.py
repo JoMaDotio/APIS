@@ -127,11 +127,11 @@ def registrarMateriaAlumno(codigo=215476966, nrc=42268):
             query = "UPDATE materia SET cupDis=%s WHERE claseNRC=%s"
             print(query, (cupDis, nrc))
             cursor.execute(query, (cupDis, nrc))
-            
+            db.commit()
             # se modifica tabla materiaAlumno
             query = "INSERT INTO materiaAlumno (codigoAl, claseNrc) VALUES (%s, %s)"
             cursor.execute(query, (codigo, nrc))
-            
+            db.commit()
             return jsonify({"code": "ok"})
         # Si la materia ya cuenta con cupo negativo entonces se hay un error
         return jsonify({"code": "error"})
