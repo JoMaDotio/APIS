@@ -173,7 +173,51 @@ def oferta():
     clave = request.args.get('clave')
     materia = request.args.get('materia')
     maestro = request.args.get('maestro')
+    multiple = False
     
+    query = "SELECT * FROM materia WHERE"
+    if (data_exists("materia", "ciclo", ciclo) == True):
+        if (multiple == True):
+            query += " AND"
+        else:
+            multiple = True
+        query += f" ciclo=\"{ciclo}\""
+    if (data_exists("materia", "clave", clave) == True):
+        if (multiple == True):
+            query += " AND"
+        else:
+            multiple = True
+        query += f" clave=\"{clave}\""
+    if (data_exists("materia", "claseNrc", materia) == True):
+        if (multiple == True):
+            query += " AND"
+        else:
+            multiple = True
+        query += f" claseNrc=\"{materia}\""
+    if (data_exists("materia", "profesor", maestro) == True):
+        if (multiple == True):
+            query += " AND"
+        else:
+            multiple = True
+        query += f" profesor=\"{maestro}\""
+    if query == "SELECT * FROM materia WHERE ":
+        return jsonify({'code': 'Error, no data avaliable'})
+    cursor.execute(query)
+    for row in cursor.fetchall():
+        data = {
+                'NRC' : row[0],
+                'Clave' : row[1],
+                'Nombre' : row[2],
+                'Dias' : row[3],
+                'Seccion' : row[4],
+                'Cupos': row[5],
+                'CuposDis': row[6],
+                'Edificio' : row[7],
+                'Aula' : row[8],
+                'Profesor' : row[9],
+                'Ciclo': row[10]
+            }
+        return data
     return
 
 def get_cupos_dis(nrc):
