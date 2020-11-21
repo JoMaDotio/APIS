@@ -174,6 +174,7 @@ def oferta():
     clave = request.args.get('clave')
     materia = request.args.get('materia')
     maestro = request.args.get('maestro')
+    nombre = request.args.get('nombre')
     multiple = False
     
     query = "SELECT * FROM materia WHERE"
@@ -183,6 +184,12 @@ def oferta():
         else:
             multiple = True
         query += f" ciclo=\"{ciclo}\""
+    if (nombre != None):
+        if (multiple == True):
+            query += " AND"
+        else:
+            multiple = True
+        query += f" nombre=\"{nombre}\""
     if (clave != None):
         if (multiple == True):
             query += " AND"
@@ -207,7 +214,7 @@ def oferta():
     auxLista = cursor.fetchall()
     if len(auxLista) != 0:
         for row in auxLista:
-            data = {
+            auxData = {
                     'NRC' : row[0],
                     'Clave' : row[1],
                     'Nombre' : row[2],
@@ -220,6 +227,7 @@ def oferta():
                     'Profesor' : row[9],
                     'Ciclo': row[10]
                 }
+            data.append(auxData)
     return jsonify(data)
 
 def get_cupos_dis(nrc):
