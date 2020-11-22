@@ -40,6 +40,7 @@ CREATE TABLE materia(
     aula VARCHAR(20) NOT NULL,
     profesor VARCHAR (500) NOT NULL,
     ciclo VARCHAR (10) NOT NULL,
+    cu VARCHAR (100) NOT NULL,
     PRIMARY KEY (claseNrc),
     FOREIGN KEY (clave)
         REFERENCES clase(clave)
