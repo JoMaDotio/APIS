@@ -1,20 +1,20 @@
-from os import execlp
 from flask import Flask, jsonify, request
 import mysql.connector
 
 
 """
 To do:
-Modify data base to have spaces for courses
-# get para oferta (ver que show ya que son muchos campos y no simpre estaran llenos)
-# post para agendar materias update materiaalumno, materia
 """
 
 """
 DONE:
+# STATUS: LOOKS ALL DONE
 # login del usuario (Consultar que exista y dar acceso) check
 # Horario del usario check
 # circulares check
+# post para agendar materias update materiaalumno, materia
+# get para oferta (ver que show ya que son muchos campos y no simpre estaran llenos)
+Modify data base to have spaces for courses
 """
 
 app = Flask(__name__)
@@ -86,7 +86,8 @@ def getCourses(dataBase, code):
                 'Edificio' : row[7],
                 'Aula' : row[8],
                 'Profesor' : row[9],
-                'Ciclo': row[10]
+                'Ciclo': row[10],
+                'CU' : row[11]
             }
             courses.append(a)
     return courses
@@ -150,8 +151,7 @@ def registrarMateriaAlumno(codigo = None, nrc = None):
     if data_exists("usuario", "codigo", codigo) == False:
         return jsonify({'code': 'Invalid code'})
     # Mensaje de error en caso de que el alumno quiera ingresar la misma materia más de una vez
-    if data_exists("materiaAlumno", "codigoAl", codigo) == True and\
-        data_exists("materiaAlumno", "claseNrc", nrc):
+    if data_exists("materiaAlumno", "codigoAl", codigo) == True and data_exists("materiaAlumno", "claseNrc", nrc):
         return jsonify({'code': 'User has already registered this course'})
     if (cupDis >= 0):
         cupDis = cupDis - 1
@@ -176,38 +176,44 @@ def oferta():
     maestro = request.args.get('maestro')
     nombre = request.args.get('nombre')
     multiple = False
-    
     query = "SELECT * FROM materia WHERE"
-    if (ciclo != None):
-        if (multiple == True):
+    if (ciclo):
+        if (multiple):
             query += " AND"
         else:
             multiple = True
         query += f" ciclo=\"{ciclo}\""
-    if (nombre != None):
-        if (multiple == True):
+    if (nombre):
+        if (multiple):
             query += " AND"
         else:
             multiple = True
         query += f" nombre=\"{nombre}\""
-    if (clave != None):
-        if (multiple == True):
+    if (clave):
+        if (multiple):
             query += " AND"
         else:
             multiple = True
         query += f" clave=\"{clave}\""
-    if (materia != None):
-        if (multiple == True):
+    if (materia):
+        if (multiple):
             query += " AND"
         else:
             multiple = True
         query += f" claseNrc=\"{materia}\""
-    if (maestro != None):
-        if (multiple == True):
+    if (maestro):
+        if (multiple):
             query += " AND"
         else:
             multiple = True
         query += f" profesor=\"{maestro}\""
+    if (centro):
+        if (multiple):
+            query += " AND"
+        else:
+            multiple = True
+        query += f" cu=\"{centro}\""
+
     if query == "SELECT * FROM materia WHERE ":
         return jsonify({'code': 'Error, no data avaliable'})
     cursor.execute(query)
