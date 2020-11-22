@@ -45,25 +45,25 @@ def login(data_base, cod, password):
 
 def getUserData(dataBase, cod):
     cursor = dataBase.cursor()
-    query = "SELECT codigo, nombre, sNombres, apellidoP, apellidoM, carrera, cicloInicio, activo FROM usuario WHERE codigo = %s"
+    query = "SELECT codigo, nombre, apellidoP, apellidoM, carrera, cicloInicio,"\
+            "activo FROM usuario WHERE codigo = %s ORDER BY apellidoP"
     cursor.execute(query,(cod,))
     usuario = {}
     for row in cursor.fetchall():
         usuario = {
             'codigo' : row[0],
             'nombre' : row[1],
-            'sNombre' : row[2],
-            'apellidoP' : row[3],
-            'apellidoM' : row[4],
-            'carrera' : row[5],
-            'cicloInicio' : row[6],
-            'activo' : row[7]
+            'apellidoP' : row[2],
+            'apellidoM' : row[3],
+            'carrera' : row[4],
+            'ciclo' : row[5],
+            'activo' : row[6]
         }
     return usuario
 
 def getCourses(dataBase, code):
     cursor =  dataBase.cursor()
-    query = 'SELECT claseNrc FROM materiaAlumno WHERE codigoAl = %s'
+    query = 'SELECT nrc FROM materiaAlumno WHERE codigo = %s'
     cursor.execute(query, (code,))
     nrc = []
     for row in cursor.fetchall():
@@ -71,7 +71,7 @@ def getCourses(dataBase, code):
         nrc.append(a)
     courses = []
     for course in nrc:
-        queryCour = 'SELECT * FROM materia WHERE claseNrc = %s'
+        queryCour = 'SELECT * FROM materia WHERE nrc = %s'
         cursor.execute(queryCour, (course,))
         row = cursor.fetchone()
         if row:
@@ -87,7 +87,7 @@ def getCourses(dataBase, code):
                 'Aula' : row[8],
                 'Profesor' : row[9],
                 'Ciclo': row[10],
-                'CU' : row[11]
+                'Centro' : row[11]
             }
             courses.append(a)
     return courses
@@ -141,25 +141,25 @@ Formats for request:
 def registrarMateriaAlumno(codigo = None, nrc = None):
     codigo = request.args.get('codigo')
     nrc = request.args.get('nrc')
-    cupDis = get_cupos_dis(nrc)
+    cuposDis = get_cupos_dis(nrc)
     if not codigo and not nrc:
         return jsonify({'code' : 'Missing CODE and NRC'})
     if not codigo or not nrc:
         return jsonify({'code' : 'Missing argument', 'cod' : codigo, 'nrc' : nrc})
-    if cupDis == "error":
+    if cuposDis == "error":
         return jsonify({'code': 'Invalid NRC'})
     if data_exists("usuario", "codigo", codigo) == False:
         return jsonify({'code': 'Invalid code'})
     # Mensaje de error en caso de que el alumno quiera ingresar la misma materia más de una vez
-    if data_exists("materiaAlumno", "codigoAl", codigo) == True and data_exists("materiaAlumno", "claseNrc", nrc):
+    if data_exists("materiaAlumno", "codigo", codigo) == True and data_exists("materiaAlumno", "nrc", nrc):
         return jsonify({'code': 'User has already registered this course'})
-    if (cupDis >= 0):
-        cupDis = cupDis - 1
-        query = "UPDATE materia SET cupDis=%s WHERE claseNRC=%s"
-        cursor.execute(query, (cupDis, nrc))
+    if (cuposDis >= 0):
+        cuposDis = cuposDis - 1
+        query = "UPDATE materia SET cuposDis=%s WHERE nrc=%s"
+        cursor.execute(query, (cuposDis, nrc))
         db.commit()
         # se modifica tabla materiaAlumno
-        query = "INSERT INTO materiaAlumno (codigoAl, claseNrc) VALUES (%s, %s)"
+        query = "INSERT INTO materiaAlumno (codigo, nrc) VALUES (%s, %s)"
         cursor.execute(query, (codigo, nrc))
         db.commit()
         return jsonify({"code": "ok"})
@@ -174,7 +174,6 @@ def oferta():
     clave = request.args.get('clave')
     materia = request.args.get('materia')
     maestro = request.args.get('maestro')
-    nombre = request.args.get('nombre')
     multiple = False
     query = "SELECT * FROM materia WHERE"
     if (ciclo):
@@ -183,12 +182,6 @@ def oferta():
         else:
             multiple = True
         query += f" ciclo=\"{ciclo}\""
-    if (nombre):
-        if (multiple):
-            query += " AND"
-        else:
-            multiple = True
-        query += f" nombre=\"{nombre}\""
     if (clave):
         if (multiple):
             query += " AND"
@@ -200,7 +193,7 @@ def oferta():
             query += " AND"
         else:
             multiple = True
-        query += f" claseNrc=\"{materia}\""
+        query += f" materia=\"{materia}\""
     if (maestro):
         if (multiple):
             query += " AND"
@@ -212,10 +205,11 @@ def oferta():
             query += " AND"
         else:
             multiple = True
-        query += f" cu=\"{centro}\""
-
-    if query == "SELECT * FROM materia WHERE ":
+        query += f" centro=\"{centro}\""
+    if query == "SELECT * FROM materia WHERE":
         return jsonify({'code': 'Error, no data avaliable'})
+    else:
+        query += ' ORDER BY materia'
     cursor.execute(query)
     auxLista = cursor.fetchall()
     if len(auxLista) != 0:
@@ -223,15 +217,18 @@ def oferta():
             auxData = {
                     'NRC' : row[0],
                     'Clave' : row[1],
-                    'Nombre' : row[2],
-                    'Dias' : row[3],
-                    'Seccion' : row[4],
-                    'Cupos': row[5],
-                    'CuposDis': row[6],
-                    'Edificio' : row[7],
-                    'Aula' : row[8],
-                    'Profesor' : row[9],
-                    'Ciclo': row[10]
+                    'Materia' : row[2],
+                    'Seccion' : row[3],
+                    # Hace falta poner créditos
+                    'Créditos': 0,
+                    'Cupos': row[9],
+                    'CuposDis': row[10],
+                    'Horario' : row[4],
+                    'Dias': row[5],
+                    'Edificio' : row[6],
+                    'Aula' : row[7],
+                    'Ciclo': row[11],
+                    'Profesor' : row[8]
                 }
             data.append(auxData)
     return jsonify(data)
@@ -239,14 +236,14 @@ def oferta():
 def get_cupos_dis(nrc):
     # Dato preliminar, si el dato no cambia después de realizar la
     # query entonces la consulta falló    
-    cupDis = "error"
+    cuposDis = "error"
     if not nrc:
         return jsonify({'code': 'NRC Missing'})
-    query = "SELECT cupDis from materia WHERE claseNrc=%s"
+    query = "SELECT cuposDis from materia WHERE nrc=%s"
     cursor.execute(query, (nrc,))
     for aux in cursor.fetchall():
-        cupDis = aux[0]
-    return cupDis
+        cuposDis = aux[0]
+    return cuposDis
 
 if __name__ == '__main__':
     app.run (debug = True)

@@ -8,14 +8,13 @@ USE theamUdg;
 
 CREATE TABLE usuario(
     codigo INT UNSIGNED NOT NULL,
-    nombre VARCHAR(100) NOT NULL,
-    sNombres VARCHAR(200) NOT NULL,
+    nombre VARCHAR(250) NOT NULL,
     apellidoP VARCHAR(100) NOT NULL,
     apellidoM VARCHAR(100) NOT NULL,
     carrera VARCHAR(100) NOT NULL,
-    adminKey BOOLEAN DEFAULT FALSE,
     cicloInicio VARCHAR(50) NOT NULL,
     activo BOOLEAN DEFAULT TRUE,
+    adminKey BOOLEAN DEFAULT FALSE,
     contrasenia VARCHAR(100) NOT NULL,
     PRIMARY KEY(codigo)
 );
@@ -29,35 +28,36 @@ CREATE TABLE clase(
 );
 
 CREATE TABLE materia(
-    claseNrc INT UNSIGNED NOT NULL,
+    nrc INT UNSIGNED NOT NULL,
     clave VARCHAR(20) NOT NULL,
-    nombre VARCHAR(20) NOT NULL,
-    dias VARCHAR(20) NOT NULL,
+    materia VARCHAR(20) NOT NULL,
     seccion VARCHAR(5) NOT NULL,
-    cupos INT DEFAULT 0,
-    cupDis INT DEFAULT 0,
+    horario VARCHAR(10) NOT NULL,
+    dias VARCHAR(20) NOT NULL,
     edificio VARCHAR(20) NOT NULL,
     aula VARCHAR(20) NOT NULL,
     profesor VARCHAR (500) NOT NULL,
+    cupos INT DEFAULT 0,
+    cuposDis INT DEFAULT 0,
     ciclo VARCHAR (10) NOT NULL,
-    cu VARCHAR (100) NOT NULL,
-    PRIMARY KEY (claseNrc),
+    centro VARCHAR (100) NOT NULL,
+    PRIMARY KEY (nrc),
     FOREIGN KEY (clave)
         REFERENCES clase(clave)
 );
 
 CREATE TABLE materiaAlumno(
-    codigoAl INT UNSIGNED NOT NULL,
-    claseNrc INT UNSIGNED NOT NULL,
-    FOREIGN KEY (codigoAl)
+    codigo INT UNSIGNED NOT NULL,
+    nrc INT UNSIGNED NOT NULL,
+    FOREIGN KEY (codigo)
         REFERENCES usuario(codigo),
-    FOREIGN KEY (claseNrc)
-        REFERENCES materia (claseNrc) 
+    FOREIGN KEY (nrc)
+        REFERENCES materia (nrc)
 );
 
 CREATE TABLE circulares(
     id INT UNSIGNED NOT NULL,
-    contenido VARCHAR(300) NOT NULL,
+    contenido VARCHAR(400) NOT NULL,
     numero INT NOT NULL,
     fecha VARCHAR(20) NOT NULL,
     PRIMARY KEY (id)
