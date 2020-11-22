@@ -28,11 +28,12 @@ def getRanking():
         data =  request.get_json()
         userName = data['userName']
         wpm = data['wpm']
-        print (data)
         if (updateRanking(userName, wpm)):
-            return jsonify({'code' : 'all good'})
+            return jsonify({'code' : 'ranking updated'})
         else: 
             return jsonify({'code' : 'Not added'})
+    else:
+        return jsonify({'code' : 'Error raised in getRanking proxy.py'})
 
 if __name__ == '__main__':
     app.run(debug=True)
