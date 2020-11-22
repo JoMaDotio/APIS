@@ -83,3 +83,12 @@ def getActualRanking():
         }
         ranking.append(data)
     return ranking
+
+def updateRanking (user, wpm):
+    try:
+        query = 'INSERT INTO ranking(userName, wpm) VALUES (%s, %s)'
+        cursor.execute(query, (user, wpm))
+        db.commit()
+        return True
+    except:
+        return False
