@@ -3,10 +3,9 @@ import mysql.connector
 # Nos conectamos a la base de datos
 # NOTA: user y password pueden cambiar dependiendo de la base de datos
 # que vayan a usar.
-db = mysql.connector.connect (user='userName',
-                              password='password',
-                              database='typing_game',
-                              auth_plugin='mysql_native_password')
+db = mysql.connector.connect (user='manuel',
+                              password='taquero',
+                              database='typing_game')
 cursor = db.cursor()
 
 # Función que retorna una lista que contiene los diccionarios que corresponden
@@ -39,7 +38,6 @@ def getLessons(numLess=None):
             "category": row[3],
             "content": []
         }
-        print(data)
         dataList.append(data)
     return dataList
 
@@ -65,7 +63,7 @@ def getContent(numLess=None):
             cursor.execute(query, (idRand,))
             auxList = (cursor.fetchall())[0]
             contents.append(auxList[0])
-        print("contents:", contents)
+        
         return contents
     # Si no se proporciona id
     cursor.execute("SELECT contents FROM randomText;")
@@ -92,3 +90,14 @@ def updateRanking (user, wpm):
         return True
     except:
         return False
+
+def getRandomText():
+    query = 'SELECT contents FROM randomtext ORDER BY RAND() LIMIT 1'
+    cursor.execute(query)
+    text = []
+    for row in cursor.fetchall():
+        a = {
+            'content':row[0]
+        }
+        text.append(a)
+    return text
