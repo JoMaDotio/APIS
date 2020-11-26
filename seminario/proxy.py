@@ -1,9 +1,9 @@
-from db_connector import getLessons, getContent, getActualRanking, updateRanking
+from db_connector import getLessons, getContent, getActualRanking, updateRanking, getRandomText
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-@app.route('/menu')
+@app.route('/menu/')
 def getMenu():
     lessons = getLessons()
     for lesson in lessons:
@@ -34,6 +34,10 @@ def getRanking():
             return jsonify({'code' : 'Not added'})
     else:
         return jsonify({'code' : 'Error raised in getRanking proxy.py'})
+
+@app.route('/randomText/')
+def freeMode():
+    return jsonify(getRandomText())
 
 if __name__ == '__main__':
     app.run(debug=True)
