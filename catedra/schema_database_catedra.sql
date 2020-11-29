@@ -30,7 +30,7 @@ CREATE TABLE clase(
 CREATE TABLE materia(
     nrc INT UNSIGNED NOT NULL,
     clave VARCHAR(20) NOT NULL,
-    materia VARCHAR(20) NOT NULL,
+    materia VARCHAR(150) NOT NULL,
     seccion VARCHAR(5) NOT NULL,
     horario VARCHAR(10) NOT NULL,
     dias VARCHAR(20) NOT NULL,

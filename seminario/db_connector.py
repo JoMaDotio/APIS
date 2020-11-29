@@ -3,8 +3,8 @@ import mysql.connector
 # Nos conectamos a la base de datos
 # NOTA: user y password pueden cambiar dependiendo de la base de datos
 # que vayan a usar.
-db = mysql.connector.connect (user='manuel',
-                              password='taquero',
+db = mysql.connector.connect (user='userName',
+                              password='password',
                               database='typing_game')
 cursor = db.cursor()
 

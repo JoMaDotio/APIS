@@ -22,6 +22,8 @@ INSERT INTO clase (clave, fechaI, fechaF, creditos)
     VALUES ('I7022', '07/09/20', '18/12/20', 8);
 INSERT INTO clase (clave, fechaI, fechaF, creditos)
     VALUES ('I5898', '07/09/20', '18/12/20', 8);
+INSERT INTO clase (clave, fechaI, fechaF, creditos)
+    VALUES ('I7026', '07/09/20', '18/12/20', 8);
 
 INSERT INTO materia (nrc, clave, materia, dias, horario, seccion, cupos, cuposDis, edificio, aula, profesor, ciclo, centro)
     VALUES (42268, 'I5884', 'ALGORITMIA', 'M,J', "7000-8055", 'D01', 42, 42, 'DEDX', 'A017', 'LUPERCIO CORONEL, RAMIRO', '2020B', 'CUCEI');
@@ -53,3 +55,6 @@ INSERT INTO materiaAlumno (codigo, nrc)
     VALUES(215476966, 140468);
 INSERT INTO materiaAlumno (codigo, nrc)
     VALUES(215476966, 42269);
+
+INSERT INTO materia(nrc, clave, materia, dias, horario, seccion, cupos, cuposDis, edificio, aula, profesor, ciclo, centro)
+    values(42261, "I7026", "TRADUCTORES DE LENGUAJES I", "L,I", "1300-1455", "D09", 24, 5, "DUCT2", "LC05", "MEZA ESPINOSA, JOSE JUAN", "2021A", "CUCEA");

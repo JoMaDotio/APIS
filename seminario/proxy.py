@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-@app.route('/menu/')
+@app.route('/menu')
 def getMenu():
     lessons = getLessons()
     for lesson in lessons:
@@ -11,7 +11,7 @@ def getMenu():
     return jsonify(lessons)
 
 
-@app.route('/lesson/')
+@app.route('/lesson')
 @app.route('/lesson/<int:num>')
 def getLessonData(num=1):
     lesson = getLessons(num)
@@ -35,7 +35,7 @@ def getRanking():
     else:
         return jsonify({'code' : 'Error raised in getRanking proxy.py'})
 
-@app.route('/randomText/')
+@app.route('/randomText')
 def freeMode():
     return jsonify(getRandomText())
 

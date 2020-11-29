@@ -193,7 +193,7 @@ def oferta():
             query += " AND"
         else:
             multiple = True
-        query += f" materia=\"{materia}\""
+        query += f" nrc=\"{materia}\""
     if (maestro):
         if (multiple):
             query += " AND"
@@ -228,7 +228,7 @@ def oferta():
                     'Edificio' : row[6],
                     'Aula' : row[7],
                     'Ciclo': row[11],
-                    'Profesor' : row[8]
+                    'Maestro' : row[8]
                 }
             data.append(auxData)
     return jsonify(data)
