@@ -178,6 +178,7 @@ def oferta():
     clave = request.args.get('clave')
     materia = request.args.get('materia')
     maestro = request.args.get('maestro')
+    nrc = request.args.get('nrc')
     multiple = False
     query = "SELECT * FROM materia WHERE"
     if (ciclo):
@@ -192,12 +193,18 @@ def oferta():
         else:
             multiple = True
         query += f" clave=\"{clave}\""
+    if (nrc):
+        if (multiple):
+            query += " AND"
+        else:
+            multiple = True
+        query += f" nrc=\"{nrc}\""
     if (materia):
         if (multiple):
             query += " AND"
         else:
             multiple = True
-        query += f" nrc=\"{materia}\""
+        query += f" materia=\"{materia}\""
     if (maestro):
         if (multiple):
             query += " AND"
@@ -213,7 +220,7 @@ def oferta():
     if query == "SELECT * FROM materia WHERE":
         return jsonify({'code': 'Error, no data avaliable'})
     else:
-        query += ' ORDER BY nrc'
+        query += ' ORDER BY materia'
     cursor.execute(query)
     auxLista = cursor.fetchall()
     if len(auxLista) != 0:
@@ -235,7 +242,7 @@ def oferta():
                     'Maestro' : row[8]
                 }
             data.append(auxData)
-            return jsonify(data)
+        return jsonify(data)
     data = { "code": "Error" }
     return jsonify(data)
 
