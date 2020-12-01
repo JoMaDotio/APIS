@@ -1,22 +1,6 @@
 from flask import Flask, jsonify, request
 import mysql.connector
 
-
-"""
-To do:
-"""
-
-"""
-DONE:
-# STATUS: LOOKS ALL DONE
-# login del usuario (Consultar que exista y dar acceso) check
-# Horario del usario check
-# circulares check
-# post para agendar materias update materiaalumno, materia
-# get para oferta (ver que show ya que son muchos campos y no simpre estaran llenos)
-Modify data base to have spaces for courses
-"""
-
 app = Flask(__name__)
 db = mysql.connector.connect (
     user = "userName", password = "password", database = "theamUdg")
@@ -137,38 +121,48 @@ def userCourses(codigo=None):
 Formats for request:
     GET -> /agenda?codigo=userCode&nrc=nrcRegis
 '''
+
 @app.route('/agenda', methods = ['POST'])
-def registrarMateriaAlumno():
+def agendar():
     if request.method == 'POST' and request.is_json:
-        data = request.get_json()
-        nrc = data["nrc"]
-        codigo = data["codigo"]
-        cuposDis = get_cupos_dis(nrc)
-        if not codigo and not nrc:
-            return jsonify({'code' : 'Missing CODE and NRC'})
-        if not codigo or not nrc:
-            return jsonify({'code' : 'Missing argument', 'cod' : codigo, 'nrc' : nrc})
-        if cuposDis == "error":
-            return jsonify({'code': 'Invalid NRC'})
-        if data_exists("usuario", "codigo", codigo) == False:
-            return jsonify({'code': 'Invalid code'})
-        # Mensaje de error en caso de que el alumno quiera ingresar la misma materia más de una vez
-        if data_exists("materiaAlumno", "codigo", codigo) == True and data_exists("materiaAlumno", "nrc", nrc):
-            return jsonify({'code': 'User has already registered this course'})
-        if (cuposDis >= 0):
-            cuposDis = cuposDis - 1
-            query = "UPDATE materia SET cuposDis=%s WHERE nrc=%s"
-            cursor.execute(query, (cuposDis, nrc))
-            db.commit()
-            # se modifica tabla materiaAlumno
-            query = "INSERT INTO materiaAlumno (codigo, nrc) VALUES (%s, %s)"
-            cursor.execute(query, (codigo, nrc))
-            db.commit()
-            return jsonify({"code": "ok"})
-        # Si la materia ya cuenta con cupo negativo entonces se hay un error
-        return jsonify({"code": "error no space"})
+        data = []
+        courses = request.get_json()
+        for nrc in courses["nrcs"]:
+            auxData = registrarMateriaAlumno(nrc, courses["codigo"])
+            auxData["nrc"] = nrc
+            data.append(auxData)
+        return jsonify(data)
     else:
-        return jsonify({"code": "Error"})
+        return jsonify({"nrc": "Error", "code": "Error"})
+
+def registrarMateriaAlumno(nrc, codigo):
+    cuposDis = get_cupos_dis(nrc)
+    if not codigo and not nrc:
+        return {'code' : 'Missing CODE and NRC'}
+    if not codigo or not nrc:
+        return {'code' : 'Missing argument', 'cod' : codigo, 'nrc' : nrc}
+    if data_exists("usuario", "codigo", codigo) == False:
+        return {'code': 'Invalid code'}
+    if data_exists("materia", "nrc", nrc) == False:
+        return {'code': 'Invalid nrc'}
+    if cuposDis == "error":
+        return {'code': 'Error'}
+    # Mensaje de error en caso de que el alumno quiera ingresar la misma materia más de una vez
+    if data_exists("materiaAlumno", "codigo", codigo) == True and data_exists("materiaAlumno", "nrc", nrc):
+        return {'code': 'User has already registered this course'}
+    if (cuposDis >= 0):
+        cuposDis = cuposDis - 1
+        query = "UPDATE materia SET cuposDis=%s WHERE nrc=%s"
+        cursor.execute(query, (cuposDis, nrc))
+        db.commit()
+        # se modifica tabla materiaAlumno
+        query = "INSERT INTO materiaAlumno (codigo, nrc) VALUES (%s, %s)"
+        cursor.execute(query, (codigo, nrc))
+        db.commit()
+        return {"code": "ok"}
+    # Si la materia ya cuenta con cupo negativo entonces se hay un error
+    return {"code": "error no space"}
+    
 
 @app.route('/oferta', methods=['GET'])
 def oferta():
@@ -221,27 +215,31 @@ def oferta():
         return jsonify({'code': 'Error, no data avaliable'})
     else:
         query += ' ORDER BY materia'
-    cursor.execute(query)
-    auxLista = cursor.fetchall()
-    if len(auxLista) != 0:
-        for row in auxLista:
-            auxData = {
-                    'NRC' : row[0],
-                    'Clave' : row[1],
-                    'Materia' : row[2],
-                    'Seccion' : row[3],
-                    # Hace falta poner créditos
-                    'Créditos': 0,
-                    'Cupos': row[9],
-                    'CuposDis': row[10],
-                    'Horario' : row[4],
-                    'Dias': row[5],
-                    'Edificio' : row[6],
-                    'Aula' : row[7],
-                    'Ciclo': row[11],
-                    'Maestro' : row[8]
-                }
-            data.append(auxData)
+    try:
+        cursor.execute(query)
+        auxLista = cursor.fetchall()
+        if len(auxLista) != 0:
+            for row in auxLista:
+                auxData = {
+                        'NRC' : row[0],
+                        'Clave' : row[1],
+                        'Materia' : row[2],
+                        'Seccion' : row[3],
+                        # Hace falta poner créditos
+                        'Créditos': 0,
+                        'Cupos': row[9],
+                        'CuposDis': row[10],
+                        'Horario' : row[4],
+                        'Dias': row[5],
+                        'Edificio' : row[6],
+                        'Aula' : row[7],
+                        'Ciclo': row[11],
+                        'Maestro' : row[8]
+                    }
+                data.append(auxData)
+            return jsonify(data)
+    except:
+        data = {"code": "Error"}
         return jsonify(data)
     data = { "code": "Error" }
     return jsonify(data)

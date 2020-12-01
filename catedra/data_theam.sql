@@ -35,6 +35,8 @@ INSERT INTO materia (nrc, clave, materia, dias, horario, seccion, cupos, cuposDi
     VALUES (59829, 'I5884', 'ALGORITMIA', 'M,J', "1300-1455", 'D10', 42, 42, 'DEDX', 'A002', 'GOMEZ ANAYA DAVID ALEJANDRO', '2020B', 'CUCEI');
 INSERT INTO materia (nrc, clave, materia, dias, horario, seccion, cupos, cuposDis, edificio, aula, profesor, ciclo, centro)
     VALUES (140468, 'I5884', 'ALGORITMIA', 'L,I', "1500-1655",'D12', 42, 42, 'DEDX', 'A006', 'RODRIGUEZ ACOSTA, LUIS FERNANDO', '2020B', 'CUCEI');
+INSERT INTO materia(nrc, clave, materia, dias, horario, seccion, cupos, cuposDis, edificio, aula, profesor, ciclo, centro)
+    values(42261, "I7026", "TRADUCTORES DE LENGUAJES I", "L,I", "1300-1455", "D09", 24, 1, "DUCT2", "LC05", "MEZA ESPINOSA, JOSE JUAN", "2021A", "CUCEA");
 
 INSERT INTO circulares (id, contenido, numero, fecha)
     VALUES (1,' Por acentroerdo con el Rector General y en seguimiento a las acciones preventivas que nuestra Institución ha llevado a cabo desde el 17 de marzo del año en centrorso para evitar la propagación del Coronavirus (Covid-19) y derivado del estado actual de la emergencia sanitaria, la Universidad de...', 31, '13/11/20');
@@ -55,6 +57,3 @@ INSERT INTO materiaAlumno (codigo, nrc)
     VALUES(215476966, 140468);
 INSERT INTO materiaAlumno (codigo, nrc)
     VALUES(215476966, 42269);
-
-INSERT INTO materia(nrc, clave, materia, dias, horario, seccion, cupos, cuposDis, edificio, aula, profesor, ciclo, centro)
-    values(42261, "I7026", "TRADUCTORES DE LENGUAJES I", "L,I", "1300-1455", "D09", 24, 5, "DUCT2", "LC05", "MEZA ESPINOSA, JOSE JUAN", "2021A", "CUCEA");
