@@ -11,7 +11,10 @@ def data_exists(table, column, data):
     retData = False
     preliminar = "error"
     query = f"SELECT {column} FROM {table} WHERE {column}=\"{data}\""
-    cursor.execute(query)
+    try:
+        cursor.execute(query)
+    except:
+        return False
     for aux in cursor.fetchall():
         preliminar = aux[0]
         if preliminar != "error":
@@ -21,7 +24,10 @@ def data_exists(table, column, data):
 def login(data_base, cod, password):
     cursor = data_base.cursor()
     query = "SELECT COUNT(*) FROM usuario WHERE codigo = %s AND contrasenia = %s"
-    cursor.execute(query, (cod,password))
+    try:
+        cursor.execute(query, (cod,password))
+    except:
+        return False
     if cursor.fetchone()[0] == 1:
         return True
     else:
@@ -31,7 +37,10 @@ def getUserData(dataBase, cod):
     cursor = dataBase.cursor()
     query = "SELECT codigo, nombre, apellidoP, apellidoM, carrera, cicloInicio,"\
             "activo FROM usuario WHERE codigo = %s ORDER BY apellidoP"
-    cursor.execute(query,(cod,))
+    try:
+        cursor.execute(query,(cod,))
+    except:
+        return 
     usuario = {}
     for row in cursor.fetchall():
         usuario = {
@@ -48,7 +57,10 @@ def getUserData(dataBase, cod):
 def getCourses(dataBase, code):
     cursor =  dataBase.cursor()
     query = 'SELECT nrc FROM materiaAlumno WHERE codigo = %s'
-    cursor.execute(query, (code,))
+    try:
+        cursor.execute(query, (code,))
+    except:
+        return {"code": "error"}
     nrc = []
     for row in cursor.fetchall():
         a = row[0]
@@ -56,7 +68,10 @@ def getCourses(dataBase, code):
     courses = []
     for course in nrc:
         queryCour = 'SELECT * FROM materia WHERE nrc = %s'
-        cursor.execute(queryCour, (course,))
+        try:
+            cursor.execute(queryCour, (course,))
+        except:
+            return {"code": "error"}
         row = cursor.fetchone()
         if row:
             a = {
@@ -97,7 +112,10 @@ def accessUser ():
 @app.route('/circulares/<int:cant>')
 def circulares(cant = 4):
     query = 'SELECT contenido, numero, fecha FROM circulares ORDER BY numero DESC LIMIT %s'
-    cursor.execute(query, (cant,))
+    try:
+        cursor.execute(query, (cant,))
+    except:
+        return jsonify({"code": "error"})
     circulares = []
     for row in cursor.fetchall():
         a = {
@@ -153,11 +171,17 @@ def registrarMateriaAlumno(nrc, codigo):
     if (cuposDis >= 0):
         cuposDis = cuposDis - 1
         query = "UPDATE materia SET cuposDis=%s WHERE nrc=%s"
-        cursor.execute(query, (cuposDis, nrc))
+        try:
+            cursor.execute(query, (cuposDis, nrc))
+        except:
+            return {'code': 'Error'}
         db.commit()
         # se modifica tabla materiaAlumno
         query = "INSERT INTO materiaAlumno (codigo, nrc) VALUES (%s, %s)"
-        cursor.execute(query, (codigo, nrc))
+        try:
+            cursor.execute(query, (codigo, nrc))
+        except:
+            return {'code': 'Error'}
         db.commit()
         return {"code": "ok"}
     # Si la materia ya cuenta con cupo negativo entonces se hay un error
@@ -217,29 +241,29 @@ def oferta():
         query += ' ORDER BY materia'
     try:
         cursor.execute(query)
-        auxLista = cursor.fetchall()
-        if len(auxLista) != 0:
-            for row in auxLista:
-                auxData = {
-                        'NRC' : row[0],
-                        'Clave' : row[1],
-                        'Materia' : row[2],
-                        'Seccion' : row[3],
-                        # Hace falta poner créditos
-                        'Créditos': 0,
-                        'Cupos': row[9],
-                        'CuposDis': row[10],
-                        'Horario' : row[4],
-                        'Dias': row[5],
-                        'Edificio' : row[6],
-                        'Aula' : row[7],
-                        'Ciclo': row[11],
-                        'Maestro' : row[8]
-                    }
-                data.append(auxData)
-            return jsonify(data)
     except:
         data = {"code": "Error"}
+        return jsonify(data)
+    auxLista = cursor.fetchall()
+    if len(auxLista) != 0:
+        for row in auxLista:
+            auxData = {
+                    'NRC' : row[0],
+                    'Clave' : row[1],
+                    'Materia' : row[2],
+                    'Seccion' : row[3],
+                    # Hace falta poner créditos
+                    'Créditos': 0,
+                    'Cupos': row[9],
+                    'CuposDis': row[10],
+                    'Horario' : row[4],
+                    'Dias': row[5],
+                    'Edificio' : row[6],
+                    'Aula' : row[7],
+                    'Ciclo': row[11],
+                    'Maestro' : row[8]
+                }
+            data.append(auxData)
         return jsonify(data)
     data = { "code": "Error" }
     return jsonify(data)
@@ -251,7 +275,10 @@ def get_cupos_dis(nrc):
     if not nrc:
         return jsonify({'code': 'NRC Missing'})
     query = "SELECT cuposDis from materia WHERE nrc=%s"
-    cursor.execute(query, (nrc,))
+    try:
+        cursor.execute(query, (nrc,))
+    except:
+        return "error"
     for aux in cursor.fetchall():
         cuposDis = aux[0]
     return cuposDis
