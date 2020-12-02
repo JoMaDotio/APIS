@@ -54,6 +54,14 @@ def getUserData(dataBase, cod):
         }
     return usuario
 
+@app.route('/horario', methods=['GET'])
+def getSchedule():
+    if request.method == 'GET':
+        codigo = request.args.get('codigo')
+        return jsonify(getCourses(db, codigo))
+    else:
+        return jsonify({"code": "error"})
+
 def getCourses(dataBase, code):
     cursor =  dataBase.cursor()
     query = 'SELECT nrc FROM materiaAlumno WHERE codigo = %s'
@@ -67,7 +75,9 @@ def getCourses(dataBase, code):
         nrc.append(a)
     courses = []
     for course in nrc:
-        queryCour = 'SELECT * FROM materia WHERE nrc = %s'
+        queryCour = 'SELECT nrc, clave, materia, seccion, horario, dias,'\
+                    'edificio, aula, profesor, cupos, cuposDis, ciclo,'\
+                    ' centro FROM materia WHERE nrc = %s'
         try:
             cursor.execute(queryCour, (course,))
         except:
@@ -78,15 +88,16 @@ def getCourses(dataBase, code):
                 'NRC' : row[0],
                 'Clave' : row[1],
                 'Nombre' : row[2],
-                'Dias' : row[3],
-                'Seccion' : row[4],
-                'Cupos': row[5],
-                'CuposDis': row[6],
-                'Edificio' : row[7],
-                'Aula' : row[8],
-                'Profesor' : row[9],
-                'Ciclo': row[10],
-                'Centro' : row[11]
+                'Seccion' : row[3],
+                'Horario' : row[4],
+                'Dias' : row[5],
+                'Edificio' : row[6],
+                'Aula' : row[7],
+                'Profesor' : row[8],
+                'Cupos': row[9],
+                'CuposDis': row[10],
+                'Ciclo': row[11],
+                'Centro' : row[12]
             }
             courses.append(a)
     return courses
@@ -125,15 +136,6 @@ def circulares(cant = 4):
         }
         circulares.append(a)
     return jsonify(circulares)
-
-@app.route('/horario')
-@app.route('/horario/<int:codigo>')
-def userCourses(codigo=None):
-    if codigo == None:
-        return jsonify({'Code':'User code missing'})
-    elif codigo:
-        return jsonify(getCourses(db,codigo))
-    return jsonify({'Code':'Error'})
 
 '''
 Formats for request:
