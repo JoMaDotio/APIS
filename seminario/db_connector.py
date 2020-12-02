@@ -3,7 +3,7 @@ import mysql.connector
 # Nos conectamos a la base de datos
 # NOTA: user y password pueden cambiar dependiendo de la base de datos
 # que vayan a usar.
-db = mysql.connector.connect (user='userName',
+db = mysql.connector.connect (user='username',
                               password='password',
                               database='typing_game')
 cursor = db.cursor()
@@ -72,7 +72,7 @@ def getContent(numLess=None):
 
 # Regresa una lista de objetos que tiene todas las posiciones del ranking
 def getActualRanking():
-    cursor.execute("SELECT * FROM ranking ORDER BY wpm DESC")
+    cursor.execute("SELECT * FROM ranking ORDER BY wpm DESC LIMIT 10")
     ranking = []
     for aux in cursor.fetchall():
         data = {
