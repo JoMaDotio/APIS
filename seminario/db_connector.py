@@ -119,7 +119,7 @@ def getRandomText():
     try:
         cursor.execute(query)
     except:
-        input("No funka")
+        print("No funka")
     text = []
     for row in cursor.fetchall():
         a = {

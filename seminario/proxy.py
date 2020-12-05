@@ -23,7 +23,7 @@ def getLessonData(num=1):
     print(lesson)
     return jsonify(lesson)
 
-@app.route('/ranked', methods = ['GET','POST'])
+@app.route('/rankedList', methods = ['GET','POST'])
 def getRanking():
     if request.method == 'GET':
         return jsonify(getActualRanking())
