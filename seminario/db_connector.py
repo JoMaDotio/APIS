@@ -90,8 +90,11 @@ def getContent(numLess=None):
 
 
 def getActualRanking():
-    cursor.execute("SELECT * FROM ranking ORDER BY wpm DESC LIMIT 10;")
-    ranking = [{"wpm": 0}]
+    ranking = []
+    try:
+        cursor.execute("SELECT * FROM ranking ORDER BY wpm DESC LIMIT 10;")
+    except:
+        return ranking
     for aux in cursor.fetchall():
         data = {
             "username": aux[0],

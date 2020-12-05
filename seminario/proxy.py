@@ -3,11 +3,15 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
+@app.route('/content/<int:num>')
+def getLessonContent(num):
+    return jsonify(getContent(num))
+
 @app.route('/menu')
 def getMenu():
     lessons = getLessons()
-    for lesson in lessons:
-        lesson["content"] = getContent(lesson["numLess"])
+    #for lesson in lessons:
+        #lesson["content"] = getContent(lesson["numLess"])
     return jsonify(lessons)
 
 
