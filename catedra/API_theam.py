@@ -3,7 +3,7 @@ import mysql.connector
 
 app = Flask(__name__)
 db = mysql.connector.connect (
-    user = "userName", password = "password", database = "theamUdg")
+    user="userName", password="password", database="theamUdg", buffered=True)
 
 cursor = db.cursor()
 
